@@ -25,10 +25,7 @@ STA $DC03         ; this is redundant because the default is 00.
 JSR HSYNC         ; after this we are at cycle 50
 LDA #$0b
 STA $D011         ; this is needed only during the HSYNC routine.
-.byte $44,$5A     ; waste 3 cycles
-.byte $44,$5A     ; waste 3 cycles
-.byte $44,$5A     ; waste 3 cycles
-.byte $44,$5A     ; waste 3 cycles
+JSR +             ; waste 12 cycles.
 NOP
 
                   ; just some vertical bars to check the horizontal sync
