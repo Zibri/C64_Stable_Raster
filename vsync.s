@@ -22,6 +22,7 @@ STA $319          ; this is for testing: pressing RESTORE re-runs the program.
 
 LDA #$00
 STA $DC03         ; this is redundant because the default is 00.
+STA ZZ+1
 
 
 JSR VSYNC         ; after this we are at scaline 0 first cycle.
@@ -29,7 +30,7 @@ LDA #$0b
 STA $D011         ; this is needed only during the HSYNC routine.
 
                   ; just some vertical bars to check the horizontal sync
--
+ZZ
 LDA #$00          ; after this we are at cycle 9 of scanline
 STA $D020
 INC $D020
@@ -39,9 +40,17 @@ INC $D020
 INC $D020
 INC $D020
 INC $D020
-INC $D020
-INC $D020
-JMP -
+CPX #$9B
+BNE W4J
+EOR #$08
+STA ZZ+1
+LDX #$00
+JMP ZZ
+W4J
+INX
+NOP
+.byte $04,$ea ;3
+JMP ZZ
 
 VSYNC:            ; SYNC to scanline 0 cycle 1
 
@@ -69,7 +78,7 @@ NOP
 
 RTS
  
-HSYNC:            ; This routine will always get you to cycle 50 of a scanline
+HSYNC:            ; This routine will always get you to cycle 50 (44 at RTS) of a scanline
 
 LDA $d012
 -
@@ -84,7 +93,7 @@ CMP #$0B          ; this is just sheer magic :D
 ADC #$11          ; this is just sheer magic :D
 LSR A
 LSR A
-STA SS+1
+STA SS+1          ; A will be: 0-6
 SS:
 BVC *
 ; the following 1 cycle clock slide does not affect any registers nor the cpu status.
