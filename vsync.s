@@ -78,11 +78,11 @@ BNE -
 
 JMP HSYNC
 
-;JSR + ; 7
-;JSR +
-;JSR +
-;JSR +
-;JSR +
+JSR + 
+JSR +
+JSR +
+JSR +
+JSR +
 ;NOP
 .byte $04,$ea ;3
 
