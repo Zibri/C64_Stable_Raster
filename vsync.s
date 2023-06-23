@@ -15,18 +15,20 @@ START
 
 JSR $E5A0         ; VIC reset (only for testing)
 SEI
-LDA #<START
+LDA #<NEXT
 STA $318
-LDA #>START
+LDA #>NEXT
 STA $319          ; this is for testing: pressing RESTORE re-runs the program.
 
 LDA #$00
 STA $DC03         ; this is redundant because the default is 00.
+P1
 STA ZZ+1
 TAX
 
 
 JSR VSYNC         ; after this we are at scaline 0 first cycle.
+P2
 LDA #$00
 STA $D011,X       ; this is just for the color bars (+waste 1 cycle)
 
@@ -49,6 +51,7 @@ INY
 STY $D020
 INY
 STY $D020
+SP
 CPX #$9B
 BNE W4J
 EOR #$08
@@ -67,6 +70,7 @@ LDA #$FF
 -
 CMP $D012
 BNE -
+SM
 LDA #$35          ; wait for scanline before the last one
 -
 CMP $D012
@@ -116,3 +120,14 @@ BVC *
 .BYTE $44,$5A
 +
 RTS
+
+NEXT
+LDA #$08
+STA P2+1
+LDA #$26
+STA SP+1
+LDA #$1f
+STA SM+1
+LDA #$0C
+STA P1
+JMP START
