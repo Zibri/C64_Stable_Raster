@@ -27,20 +27,28 @@ TAX
 
 
 JSR VSYNC         ; after this we are at scaline 0 first cycle.
-LDA #$0b
-STA $D011,X       ; this is just for the color bars
+LDA #$00
+STA $D011,X       ; this is just for the color bars (+waste 1 cycle)
 
                   ; just some vertical bars to check the horizontal sync
+
 ZZ
-LDA #$00          ; after this we are at cycle 9 of scanline
-STA $D020
-INC $D020
-INC $D020
-INC $D020
-INC $D020
-INC $D020
-INC $D020
-INC $D020
+LDY #$00          ; after this we are at cycle 9 of scanline
+STY $D020
+INY
+STY $D020
+INY
+STY $D020
+INY
+STY $D020
+INY
+STY $D020
+INY
+STY $D020
+INY
+STY $D020
+INY
+STY $D020
 CPX #$9B
 BNE W4J
 EOR #$08
@@ -64,19 +72,20 @@ LDA #$35          ; wait for scanline before the last one
 CMP $D012
 BNE -
 
-JSR HSYNC
+JMP HSYNC
 
-JSR +
-JSR +
-JSR +
-JSR +
-JSR +
-NOP
+;JSR + ; 7
+;JSR +
+;JSR +
+;JSR +
+;JSR +
+;NOP
+.byte $04,$ea ;3
 
 
-RTS
+;RTS
  
-HSYNC:            ; This routine will always get you to cycle 50 (44 at RTS) of a scanline
+HSYNC:            ; This routine will always get you to cycle 0 (58 at RTS) of a scanline
 
 LDA $d012
 -
@@ -102,6 +111,8 @@ BVC *
 .BYTE $80
 .BYTE $80, $80
 .BYTE $80, $80
+.BYTE $80, $80
+.BYTE $44,$5A
 .BYTE $44,$5A
 +
 RTS
