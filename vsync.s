@@ -76,18 +76,16 @@ LDA #$35          ; wait for scanline before the last one
 CMP $D012
 BNE -
 
-JMP HSYNC
+JSR HSYNC
 
 JSR + 
 JSR +
 JSR +
 JSR +
 JSR +
-;NOP
-.byte $04,$ea ;3
+NOP
 
-
-;RTS
+RTS
  
 HSYNC:            ; This routine will always get you to cycle 0 (58 at RTS) of a scanline
 
@@ -115,18 +113,17 @@ BVC *
 .BYTE $80
 .BYTE $80, $80
 .BYTE $80, $80
-.BYTE $80, $80
-.BYTE $44,$5A
 .BYTE $44,$5A
 +
 RTS
+
 
 NEXT
 LDA #$08
 STA P2+1
 LDA #$26
 STA SP+1
-LDA #$1f
+LDA #$1e
 STA SM+1
 LDA #$0C
 STA P1
