@@ -47,11 +47,7 @@ JMP -
 
 HSYNC:            ; This routine will always get you to cycle 58 (52 at RTS) of a scanline
 
-LDA #$FD
--
-CMP $D012
-BNE -             ; wait for the start of the next scanline.
-
+LDA $D012
 -
 CMP $D012
 BEQ -             ; wait for the start of the next scanline.
