@@ -97,12 +97,12 @@ BEQ -             ; wait for the start of the next scaline.
 DEC $DC03         ; trigger the light pen
 INC $DC03         ; restore port B to input
 LDA $D013         ; read the raster X position
-STA $2
-LSR A
-LDA $2
+STA $2            ; this can be TAX
+LSR A             ; bit #0 in C
+LDA $2            ; this can be TXA
 ADC #$00          ; if carry is set this is a 8565 i f it's clear it's a 6569
-CMP #$0B          ; this is just sheer magic :D
-ADC #$11          ; this is just sheer magic :D
+CMP #$0B          ; add 1 cycle if $d013 was negative.
+ADC #$11          ; make d013 positive.
 LSR A
 LSR A
 STA SS+1          ; A will be: 0-6
